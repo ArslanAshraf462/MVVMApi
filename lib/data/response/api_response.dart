@@ -1,5 +1,5 @@
 
-import 'package:mvvm_api/data/response/status.dart';
+import '/data/response/status.dart';
 
 class ApiResponse<T>{
   Status? status;
