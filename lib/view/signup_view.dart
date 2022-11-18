@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:mvvm_api/view_model/auth_view_model.dart';
+import 'package:mvvm_api/utils/routes/routes_name.dart';
 import 'package:provider/provider.dart';
-import '/utils/utils.dart';
-import '../res/components/round_button.dart';
-import '/utils/routes/routes_name.dart';
 
-class LoginView extends StatefulWidget {
-  const LoginView({Key? key}) : super(key: key);
+import '../res/components/round_button.dart';
+import '../utils/utils.dart';
+import '../view_model/auth_view_model.dart';
+
+class SignUpView extends StatefulWidget {
+  const SignUpView({Key? key}) : super(key: key);
+
 
   @override
-  State<LoginView> createState() => _LoginViewState();
+  State<SignUpView> createState() => _SignUpViewState();
 }
 
-class _LoginViewState extends State<LoginView> {
-
+class _SignUpViewState extends State<SignUpView> {
   final ValueNotifier<bool> _obsecurePassword = ValueNotifier<bool>(true);
   final TextEditingController _emailController =TextEditingController();
   final TextEditingController _passwordController =TextEditingController();
@@ -35,7 +36,7 @@ class _LoginViewState extends State<LoginView> {
     final height = MediaQuery.of(context).size.height * 1;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Login'),
+        title: const Text('Signup'),
         centerTitle: true,
       ),
       body: SafeArea(
@@ -57,34 +58,34 @@ class _LoginViewState extends State<LoginView> {
               },
             ),
             ValueListenableBuilder(
-                valueListenable: _obsecurePassword,
-                builder: (context, value, child) {
-                  return TextFormField(
-                    controller: _passwordController,
-                    obscureText: _obsecurePassword.value,
-                    focusNode: passwordFocusNode,
-                    obscuringCharacter: '*',
-                    decoration:  InputDecoration(
-                      hintText: 'Password',
-                      label: const Text('Password'),
-                      prefixIcon: const Icon(Icons.lock_open_outlined),
-                      suffixIcon: InkWell(
-                        onTap: () {
-                          _obsecurePassword.value= !_obsecurePassword.value;
-                        },
-                          child: Icon(
-                              _obsecurePassword.value
-                                  ? Icons.visibility_off_outlined
-                          : Icons.visibility
-                          ),
+              valueListenable: _obsecurePassword,
+              builder: (context, value, child) {
+                return TextFormField(
+                  controller: _passwordController,
+                  obscureText: _obsecurePassword.value,
+                  focusNode: passwordFocusNode,
+                  obscuringCharacter: '*',
+                  decoration:  InputDecoration(
+                    hintText: 'Password',
+                    label: const Text('Password'),
+                    prefixIcon: const Icon(Icons.lock_open_outlined),
+                    suffixIcon: InkWell(
+                      onTap: () {
+                        _obsecurePassword.value= !_obsecurePassword.value;
+                      },
+                      child: Icon(
+                          _obsecurePassword.value
+                              ? Icons.visibility_off_outlined
+                              : Icons.visibility
                       ),
                     ),
-                  );
-                },),
+                  ),
+                );
+              },),
             SizedBox(height: height * 0.085,),
             RoundButton(
-              title: 'Login',
-              loading: authViewModel.loading,
+              title: 'Sign Up',
+              loading: authViewModel.signUpLoading,
               onPress: () {
                 if(_emailController.text.isEmpty){
                   Utils.flushBarErrorMessage("Please enter email", context);
@@ -97,17 +98,17 @@ class _LoginViewState extends State<LoginView> {
                     'email' : _emailController.text.toString(),
                     'password' : _passwordController.text.toString(),
                   };
-                  authViewModel.loginApi(data,context);
+                  authViewModel.signUpApi(data,context);
                   print('api hit');
                 }
               },
             ),
             SizedBox(height: height * 0.02,),
-           InkWell(
+            InkWell(
               onTap: () {
-                Navigator.pushNamed(context, RoutesName.signup);
+                Navigator.pushNamed(context, RoutesName.login);
               },
-                child: Text("Don't have an account? Sign Up")),
+                child: Text("Already have an account? Login")),
           ],
         ),
       ),
