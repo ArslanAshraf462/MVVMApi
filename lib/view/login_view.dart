@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mvvm_api/view_model/auth_view_model.dart';
 import 'package:provider/provider.dart';
@@ -98,7 +99,9 @@ class _LoginViewState extends State<LoginView> {
                     'password' : _passwordController.text.toString(),
                   };
                   authViewModel.loginApi(data,context);
-                  print('api hit');
+                  if (kDebugMode) {
+                    print('api hit');
+                  }
                 }
               },
             ),
