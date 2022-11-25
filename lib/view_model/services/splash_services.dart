@@ -9,7 +9,7 @@ import '../../model/user_model.dart';
 class SplashServices {
   void checkAuthentication(BuildContext context){
     getUserData().then((value) async{
-      if(value.token == 'null' || value.token == ''){
+      if(value.token.toString() == 'null' || value.token.toString() == ''){
         await Future.delayed(const Duration(seconds: 3));
         Navigator.pushNamed(context, RoutesName.login);
       }else{

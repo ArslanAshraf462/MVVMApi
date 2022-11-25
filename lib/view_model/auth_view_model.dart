@@ -1,8 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:mvvm_api/respository/auth_repository.dart';
-import 'package:mvvm_api/utils/routes/routes_name.dart';
-import 'package:mvvm_api/utils/utils.dart';
+import '/model/user_model.dart';
+import '/respository/auth_repository.dart';
+import '/utils/routes/routes_name.dart';
+import '/utils/utils.dart';
+import '/view_model/user_view_model.dart';
+import 'package:provider/provider.dart';
 
 class AuthViewModel with ChangeNotifier{
   final _myRepo = AuthRepository();
@@ -28,6 +31,12 @@ class AuthViewModel with ChangeNotifier{
     setLoading(true);
     _myRepo.loginApi(data).then((value){
       setLoading(false);
+      final userPreference = Provider.of<UserViewModel>(context,listen: false);
+      userPreference.saveUser(
+        UserModel(
+          token: value['token'].toString(),
+        )
+      );
       Utils.flushBarErrorMessage('Login Successfully', context);
       Navigator.pushNamed(context, RoutesName.home);
       if(kDebugMode) {
